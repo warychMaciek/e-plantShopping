@@ -299,21 +299,31 @@ const handleTotalQuantityChange = (difference) => {
                 <div key={index}>
                     <h2>{category.category}</h2>
                     <div className="product-list">
-                        {category.plants.map((plant, plantIndex) => (
-                            <div key={plantIndex} className="product-card">
-                                <img className="product-image" src={plant.image} alt={plant.name} />
-                                <h3 className="product-title">{plant.name}</h3>
-                                <p>{plant.description}</p>
-                                <p>{plant.cost}</p>
-                                <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
-                            </div>
-                        ))}
+                        {category.plants.map((plant, plantIndex) => {
+                            const added = addedToCart[plant.name] || false;
+                            
+                            return (
+                                <div key={plantIndex} className="product-card">
+                                    <img className="product-image" src={plant.image} alt={plant.name} />
+                                    <h3 className="product-title">{plant.name}</h3>
+                                    <p>{plant.description}</p>
+                                    <p>{plant.cost}</p>
+                                    <button 
+                                        className="product-button" 
+                                        onClick={() => handleAddToCart(plant)}
+                                        disabled={added}
+                                        style={{ backgroundColor: added ? 'gray' : '#4CAF50' }}
+                                    >
+                                        {added ? 'Added to Cart' : 'Add to Cart'}
+                                    </button>
+                                </div>
+                        )})}
                     </div>
                 </div>
             ))}
         </div>
  ) :  (
-    <CartItem onContinueShopping={handleContinueShopping} handleTotalQuantityChange={handleTotalQuantityChange}/>
+    <CartItem onContinueShopping={handleContinueShopping} handleTotalQuantityChange={handleTotalQuantityChange} setAddedToCart={setAddedToCart} />
 )}
     </div>
     );
